@@ -63,8 +63,6 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_eip" "nat_eip" {
-  vpc = true
-
   tags = {
     Name = "nat-eip"
   }
