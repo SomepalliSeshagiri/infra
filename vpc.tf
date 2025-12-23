@@ -62,22 +62,30 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-resource "aws_eip" "nat_eip" {
-  tags = {
-    Name = "nat-eip"
-  }
-}
+# -----------------------------
+# NAT Gateway + EIP DISABLED
+# -----------------------------
 
-resource "aws_nat_gateway" "nat" {
-  allocation_id = aws_eip.nat_eip.id
-  subnet_id     = aws_subnet.public_1.id
+# resource "aws_eip" "nat_eip" {
+#   tags = {
+#     Name = "nat-eip"
+#   }
+# }
 
-  tags = {
-    Name = "main-nat-gateway"
-  }
+# resource "aws_nat_gateway" "nat" {
+#   allocation_id = aws_eip.nat_eip.id
+#   subnet_id     = aws_subnet.public_1.id
+#
+#   tags = {
+#     Name = "main-nat-gateway"
+#   }
+#
+#   depends_on = [aws_internet_gateway.igw]
+# }
 
-  depends_on = [aws_internet_gateway.igw]
-}
+# -----------------------------
+# PUBLIC ROUTE TABLE (KEEP)
+# -----------------------------
 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
@@ -102,27 +110,32 @@ resource "aws_route_table_association" "public_2_assoc" {
   route_table_id = aws_route_table.public.id
 }
 
-resource "aws_route_table" "private" {
-  vpc_id = aws_vpc.main.id
+# -----------------------------
+# PRIVATE ROUTE TABLE DISABLED
+# (because NAT Gateway is removed)
+# -----------------------------
 
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat.id
-  }
+# resource "aws_route_table" "private" {
+#   vpc_id = aws_vpc.main.id
+#
+#   route {
+#     cidr_block     = "0.0.0.0/0"
+#     nat_gateway_id = aws_nat_gateway.nat.id
+#   }
+#
+#   tags = {
+#     Name = "private-rt"
+#   }
+# }
 
-  tags = {
-    Name = "private-rt"
-  }
-}
+# resource "aws_route_table_association" "private_1_assoc" {
+#   subnet_id      = aws_subnet.private_1.id
+#   route_table_id = aws_route_table.private.id
+# }
 
-resource "aws_route_table_association" "private_1_assoc" {
-  subnet_id      = aws_subnet.private_1.id
-  route_table_id = aws_route_table.private.id
-}
-
-resource "aws_route_table_association" "private_2_assoc" {
-  subnet_id      = aws_subnet.private_2.id
-  route_table_id = aws_route_table.private.id
-}
+# resource "aws_route_table_association" "private_2_assoc" {
+#   subnet_id      = aws_subnet.private_2.id
+#   route_table_id = aws_route_table.private.id
+# }
 
 # Testing a CICD pipeline
