@@ -1,3 +1,4 @@
+/* # EVERYTHING IN THIS FILE IS DISABLED FOR COST SAVINGS
 # ALB Security Group
 resource "aws_security_group" "alb_sg" {
   name        = "alb-sg"
@@ -182,3 +183,4 @@ resource "aws_lb_listener" "http_listener" {
     target_group_arn = aws_lb_target_group.app_tg.arn
   }
 }
+*/
