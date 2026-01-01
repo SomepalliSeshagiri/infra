@@ -1,14 +1,16 @@
 name: Terraform CI/CD
 
+workflow_dispatch:
+    - qual
+    - cert
+    - prod
+
 on:
   push:
     branches:
       - main
   pull_request:
-  workflow_dispatch:
-    - qual
-    - cert
-    - prod
+  
 
 permissions:
   id-token: write
