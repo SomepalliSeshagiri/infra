@@ -1,9 +1,15 @@
 name: Terraform CI/CD
 
 workflow_dispatch:
-    - qual
-    - cert
-    - prod
+  inputs:
+    environment:
+      description: "Choose environment"
+      required: true
+      type: choice
+      options:
+        - qual
+        - cert
+        - prod
 
 on:
   push:
