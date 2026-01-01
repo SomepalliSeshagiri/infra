@@ -1,17 +1,16 @@
 name: Terraform CI/CD
 
-workflow_dispatch:
-  inputs:
-    environment:
-      description: "Choose environment"
-      required: true
-      type: choice
-      options:
-        - qual
-        - cert
-        - prod
-
 on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose environment"
+        required: true
+        type: choice
+        options:
+          - qual
+          - cert
+          - prod
   push:
     branches:
       - main
